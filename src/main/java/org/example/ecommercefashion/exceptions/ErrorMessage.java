@@ -1,5 +1,7 @@
 package org.example.ecommercefashion.exceptions;
 
+import com.longnh.exceptions.BaseErrorMessage;
+
 public enum ErrorMessage implements BaseErrorMessage {
   SUCCESS("Success"),
   FALSE("False");
