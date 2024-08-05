@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ecommerce-fashion
+
+  server:
+    port: ${PORT_SERVER}
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/test
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      format-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
