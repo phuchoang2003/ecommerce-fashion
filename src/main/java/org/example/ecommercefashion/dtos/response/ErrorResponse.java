@@ -1,16 +1,22 @@
 package org.example.ecommercefashion.dtos.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class TestResponse {
+@Builder
+public class ErrorResponse {
 
-    private Long id;
+    private int status;
 
-    private String name;
+    private String message;
 
+    private String path;
+
+    private String timestamp;
 }
+

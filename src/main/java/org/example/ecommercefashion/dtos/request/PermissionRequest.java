@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TestRequest {
-  
-  @NotBlank(message = "Name is mandatory")
-  @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+public class PermissionRequest {
+
+  @NotBlank(message = " Permission name is required")
+  @Size(min = 2, max = 50, message = "Permission name must be between 2 and 50 characters")
   private String name;
 }

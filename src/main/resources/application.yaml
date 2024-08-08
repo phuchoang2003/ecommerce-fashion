@@ -1,3 +1,22 @@
+jwt:
+  key: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION_MS}
+refresh-token:
+  expiration: ${JWT_REFRESH_EXPIRATION_MS}
+  key: ${JWT_REFRESH_SECRET}
+
+facebook:
+  client-id: ${FACEBOOK_CLIENT_ID}
+  client-secret: ${FACEBOOK_CLIENT_SECRET}
+  redirect-uri: ${FACEBOOK_REDIRECT_URI}
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  redirect-uri: ${GOOGLE_REDIRECT_URI}
+
+
+
 spring:
   application:
     name: ecommerce-fashion
@@ -6,16 +25,17 @@ spring:
     port: ${PORT_SERVER}
 
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/test
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/ecommerce_fashion
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       show-sql: true
       format-sql: true
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
+
