@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Where(clause = "deleted = false")
 public class User implements UserDetails, Serializable {
 
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
