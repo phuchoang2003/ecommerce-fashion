@@ -1,20 +1,21 @@
 package org.example.ecommercefashion.entities;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.example.ecommercefashion.enums.TypeImage;
-
-import javax.persistence.*;
+import org.hibernate.annotations.Where;
 
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "images" )
-public class Image extends BaseEntity{
+@AllArgsConstructor
+@NoArgsConstructor
+@Where(clause = "deleted = false")
+@Table(name = "images")
+public class Image extends BaseEntity {
 
     @Column(name = "url")
     private String url;
