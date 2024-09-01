@@ -1,6 +1,6 @@
-package org.example.ecommercefashion.repositories;
+package org.example.ecommercefashion.repositories.mysql;
 
-import org.example.ecommercefashion.entities.RefreshToken;
+import org.example.ecommercefashion.entities.mysql.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -111,7 +111,7 @@ public class StorageServiceImpl implements StorageService {
                             .method(Method.GET)
                             .bucket(bucketName)
                             .object(objectName)
-                            .expiry(100000, TimeUnit.DAYS)
+                            .expiry(7, TimeUnit.DAYS)
                             .build()
             );
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |

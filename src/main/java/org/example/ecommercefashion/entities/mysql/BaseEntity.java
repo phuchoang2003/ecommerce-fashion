@@ -1,13 +1,13 @@
-package org.example.ecommercefashion.entities;
+package org.example.ecommercefashion.entities.mysql;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 
@@ -38,5 +38,6 @@ public abstract class BaseEntity {
     @Column(name = "deleted_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp deletedAt;
+
 
 }

@@ -25,6 +25,9 @@ minio:
   bucket:
     name: ${MINIO_BUCKET_NAME}
 
+socketio:
+  host: ${SOCKETIO_HOST}
+  port: ${SOCKETIO_PORT}
 
 spring:
   application:
@@ -34,7 +37,7 @@ spring:
     port: ${PORT_SERVER}
 
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/ecommerce_fashion
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${MY_SQL_NAME}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -50,6 +53,10 @@ spring:
               model:
                 naming:
                   PhysicalNamingStrategyStandardImpl
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_DB_HOST}:${MONGO_DB_PORT}/${MONGO_DB_NAME}
+
     properties:
       hibernate:
         format_sql: true

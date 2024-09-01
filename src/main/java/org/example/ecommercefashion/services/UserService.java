@@ -6,25 +6,29 @@ import org.example.ecommercefashion.dtos.request.UserRoleAssignRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
 import org.example.ecommercefashion.dtos.response.UserResponse;
-import org.example.ecommercefashion.entities.User;
+import org.example.ecommercefashion.entities.mysql.User;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public interface UserService {
 
-  UserResponse createUser(UserRequest userRequest);
+    UserResponse createUser(UserRequest userRequest);
 
-  UserResponse updateUser(Long id, UserRequest userRequest);
+    UserResponse updateUser(Long id, UserRequest userRequest);
 
-  MessageResponse deleteUser(Long id);
+    MessageResponse deleteUser(Long id);
 
-  UserResponse getUserById(Long id);
+    UserResponse getUserById(Long id);
 
-  MessageResponse assignRoleAdmin(String email);
+    MessageResponse assignRoleAdmin(String email);
 
-  MessageResponse changePassword(ChangePasswordRequest changePasswordRequest);
+    MessageResponse changePassword(ChangePasswordRequest changePasswordRequest);
 
-  ResponsePage<User, UserResponse> getAllUsers(Pageable pageable);
+    ResponsePage<User, UserResponse> getAllUsers(Pageable pageable);
 
-  MessageResponse assignUserRole(UserRoleAssignRequest userRoleAssignRequest);
+    MessageResponse assignUserRole(UserRoleAssignRequest userRoleAssignRequest);
+
+    void checkUsersExists(Set<Long> userIds);
 }

@@ -2,13 +2,13 @@ package org.example.ecommercefashion.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.ecommercefashion.enums.GenderEnum;
+
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -17,18 +17,18 @@ import org.example.ecommercefashion.enums.GenderEnum;
 @Builder
 public class UserResponse {
 
-  private Long id;
+    private Long id;
 
-  private String email;
+    private String email;
 
-  private String fullName;
+    private String fullName;
 
-  private String phoneNumber;
+    private String phoneNumber;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  private Date birth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date birth;
 
-  private GenderEnum gender;
+    private GenderEnum gender;
 
-  private String avatar;
+    private String avatar;
 }

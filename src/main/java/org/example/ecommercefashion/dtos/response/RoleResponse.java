@@ -3,9 +3,7 @@ package org.example.ecommercefashion.dtos.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.ecommercefashion.entities.Permission;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,9 +11,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class RoleResponse {
 
-  private Long id;
+    private Long id;
 
-  private String name;
+    private String name;
 
-  private Set<PermissionResponse> permissions;
+    private Set<PermissionResponse> permissions;
 }

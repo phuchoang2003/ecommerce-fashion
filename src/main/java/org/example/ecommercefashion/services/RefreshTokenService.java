@@ -1,20 +1,21 @@
 package org.example.ecommercefashion.services;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.example.ecommercefashion.dtos.response.AuthResponse;
-import org.example.ecommercefashion.entities.RefreshToken;
-import org.example.ecommercefashion.entities.User;
+import org.example.ecommercefashion.entities.mysql.RefreshToken;
+import org.example.ecommercefashion.entities.mysql.User;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public interface RefreshTokenService {
 
-  void saveUserToken(User user, String token);
+    void saveUserToken(User user, String token);
 
-  RefreshToken findRefreshToken(String token);
+    RefreshToken findRefreshToken(String token);
 
-  void revokeAllUserToken(User user);
+    void revokeAllUserToken(User user);
 
-  AuthResponse refreshToken(HttpServletRequest request, HttpServletResponse response)
-      throws IOException;
+    AuthResponse refreshToken(HttpServletRequest request, HttpServletResponse response)
+            throws IOException;
 }

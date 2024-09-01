@@ -18,7 +18,9 @@ public enum ErrorMessage implements BaseErrorMessage {
     ERROR_UPLOADING_FILE("Error uploading file"),
     SOMETHING_WENT_WRONG("Something went wrong"),
     NOT_FOUND_BUCKET("Not found bucket"),
-    IMAGE_NOT_FOUND("Image not found");
+    IMAGE_NOT_FOUND("Image not found"),
+    UNAUTHORIZED("Unauthorized"),
+    ;
 
     public String val;
 

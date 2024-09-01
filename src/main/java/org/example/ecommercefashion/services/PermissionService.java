@@ -4,18 +4,18 @@ import org.example.ecommercefashion.dtos.request.PermissionRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.PermissionResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
-import org.example.ecommercefashion.entities.Permission;
+import org.example.ecommercefashion.entities.mysql.Permission;
 import org.springframework.data.domain.Pageable;
 
 public interface PermissionService {
 
-  PermissionResponse createPermission(PermissionRequest permissionRequest);
+    PermissionResponse createPermission(PermissionRequest permissionRequest);
 
-  PermissionResponse getPermissionById(Long id);
+    PermissionResponse getPermissionById(Long id);
 
-  MessageResponse deletePermission(Long id);
+    MessageResponse deletePermission(Long id);
 
-  PermissionResponse updatePermission(Long id, PermissionRequest permissionRequest);
+    PermissionResponse updatePermission(Long id, PermissionRequest permissionRequest);
 
-  ResponsePage<Permission, PermissionResponse> getAllPermissions(Pageable pageable);
+    ResponsePage<Permission, PermissionResponse> getAllPermissions(Pageable pageable);
 }

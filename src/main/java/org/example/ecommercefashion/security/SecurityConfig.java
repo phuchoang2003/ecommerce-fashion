@@ -1,7 +1,6 @@
 package org.example.ecommercefashion.security;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,7 +17,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
 @SuppressWarnings("unused")
 public class SecurityConfig {
 
@@ -31,18 +29,20 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request ->
-                                request.requestMatchers("/api/v1/auth/**").permitAll().anyRequest().permitAll())
+                                request.antMatchers("/api/v1/auth/**").permitAll()
+                                        .antMatchers("/ws/**").permitAll()
+                                        .anyRequest().permitAll())
                 .sessionManagement(
                         manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-//        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(
                         cors ->
                                 cors.configurationSource(
                                         request -> {
                                             CorsConfiguration corsConfig = new CorsConfiguration();
                                             corsConfig.addAllowedOrigin("*");
-                                            corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                                            corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                                             corsConfig.addAllowedHeader("*");
                                             return corsConfig;
                                         }));

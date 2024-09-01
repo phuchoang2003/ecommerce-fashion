@@ -1,10 +1,11 @@
-package org.example.ecommercefashion.entities;
+package org.example.ecommercefashion.entities.mysql;
 
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.example.ecommercefashion.enums.TypeImage;
 import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 
 @Entity

@@ -3,7 +3,7 @@ package org.example.ecommercefashion.services;
 import org.example.ecommercefashion.dtos.request.ImageRequest;
 import org.example.ecommercefashion.dtos.response.ImageResponse;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
-import org.example.ecommercefashion.entities.Image;
+import org.example.ecommercefashion.entities.mysql.Image;
 
 import java.util.List;
 
