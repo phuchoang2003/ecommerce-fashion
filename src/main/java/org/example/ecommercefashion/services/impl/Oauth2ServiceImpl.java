@@ -6,14 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.ecommercefashion.dtos.request.FacebookLoginRequest;
 import org.example.ecommercefashion.dtos.request.GoogleLoginRequest;
 import org.example.ecommercefashion.dtos.response.AuthResponse;
-import org.example.ecommercefashion.entities.mysql.User;
+import org.example.ecommercefashion.entities.postgres.User;
 import org.example.ecommercefashion.httpclient.FacebookIdentityClient;
 import org.example.ecommercefashion.httpclient.FacebookUserClient;
 import org.example.ecommercefashion.httpclient.GoogleIdentityClient;
 import org.example.ecommercefashion.httpclient.GoogleUserClient;
-import org.example.ecommercefashion.repositories.mysql.UserRepository;
-import org.example.ecommercefashion.security.JwtService;
+import org.example.ecommercefashion.repositories.postgres.UserRepository;
 import org.example.ecommercefashion.services.Oauth2Service;
+import org.example.ecommercefashion.services.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class Oauth2ServiceImpl implements Oauth2Service {
     private final FacebookUserClient facebookUserClient;
     private final GoogleIdentityClient googleIdentityClient;
     private final GoogleUserClient googleUserClient;
-    private final JwtService jwtService;
+    private final UserService userService;
     @NonFinal
     @Value("${facebook.client-id}")
     protected String CLIENT_ID;
@@ -73,10 +73,8 @@ public class Oauth2ServiceImpl implements Oauth2Service {
             user.setFullName(userInfo.getName());
             user.setAvatar(userInfo.getPicture().getData().getUrl());
             userRepository.save(user);
-            jwtService.generateToken(user);
             return AuthResponse.builder()
-                    .accessToken(jwtService.generateToken(user))
-                    .refreshToken(jwtService.generateRefreshToken(user))
+
                     .build();
 
         } else {
@@ -85,8 +83,7 @@ public class Oauth2ServiceImpl implements Oauth2Service {
             existingUser.setAvatar(userInfo.getPicture().getData().getUrl());
             userRepository.save(existingUser);
             return AuthResponse.builder()
-                    .accessToken(jwtService.generateToken(existingUser))
-                    .refreshToken(jwtService.generateRefreshToken(existingUser))
+
                     .build();
         }
     }
@@ -112,10 +109,8 @@ public class Oauth2ServiceImpl implements Oauth2Service {
             user.setFullName(userInfo.getName());
             user.setAvatar(userInfo.getPicture());
             userRepository.save(user);
-            jwtService.generateToken(user);
             return AuthResponse.builder()
-                    .accessToken(jwtService.generateToken(user))
-                    .refreshToken(jwtService.generateRefreshToken(user))
+
                     .build();
         } else {
             existingUser.setGoogleAccountId(userInfo.getId());
@@ -123,13 +118,12 @@ public class Oauth2ServiceImpl implements Oauth2Service {
             existingUser.setDeleted(false);
             userRepository.save(existingUser);
             return AuthResponse.builder()
-                    .accessToken(jwtService.generateToken(existingUser))
-                    .refreshToken(jwtService.generateRefreshToken(existingUser))
+
                     .build();
         }
     }
 
     private User checkUserExist(String email) {
-        return userRepository.findByEmail(email);
+        return userService.getUserByEmail(email);
     }
 }

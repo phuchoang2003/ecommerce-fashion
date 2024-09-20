@@ -45,7 +45,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "2");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
     }
 
@@ -60,7 +60,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "1");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
     }
 
@@ -79,7 +79,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "3");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
     }
 
@@ -95,7 +95,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "4");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
     }
 
@@ -117,7 +117,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | XmlParserException |
                  ServerException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "5");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
 
         return url;
@@ -133,7 +133,7 @@ public class StorageServiceImpl implements StorageService {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val() + "6");
+            throw new ExceptionHandle(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessage.SOMETHING_WENT_WRONG.val());
         }
         if (!isExisted) {
             throw new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.NOT_FOUND_BUCKET.val());

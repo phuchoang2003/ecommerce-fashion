@@ -1,17 +1,17 @@
 package org.example.ecommercefashion.dtos.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.ecommercefashion.annotations.ValidPassword;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Data
 public class ResetPasswordRequest {
-
-    @ValidPassword
-    private String newPassword;
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
+    private String email;
 }

@@ -1,15 +1,14 @@
 package org.example.ecommercefashion.services.impl;
 
 import com.longnh.exceptions.ExceptionHandle;
-import com.longnh.utils.FnCommon;
 import lombok.RequiredArgsConstructor;
 import org.example.ecommercefashion.dtos.request.PermissionRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.PermissionResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
-import org.example.ecommercefashion.entities.mysql.Permission;
+import org.example.ecommercefashion.entities.postgres.Permission;
 import org.example.ecommercefashion.exceptions.ErrorMessage;
-import org.example.ecommercefashion.repositories.mysql.PermissionRepository;
+import org.example.ecommercefashion.repositories.postgres.PermissionRepository;
 import org.example.ecommercefashion.services.PermissionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,23 +27,22 @@ public class PermissionServiceImpl implements PermissionService {
     private final PermissionRepository permissionRepository;
 
     @Override
-    @Transactional
-    public PermissionResponse createPermission(PermissionRequest permissionRequest) {
+    @Transactional(rollbackFor = Exception.class)
+    public PermissionResponse createPermission(PermissionRequest request) {
         Permission permission = new Permission();
-        FnCommon.coppyNonNullProperties(permission, permissionRequest);
+        permission.setName(request.getName());
         entityManager.persist(permission);
         return mapPermissionToPermissionResponse(permission);
     }
 
     @Override
-    @Transactional
-    public PermissionResponse updatePermission(Long id, PermissionRequest permissionRequest) {
+    @Transactional(rollbackFor = Exception.class)
+    public PermissionResponse updatePermission(Long id, PermissionRequest request) {
         Permission permission =
                 Optional.ofNullable(entityManager.find(Permission.class, id))
                         .orElseThrow(
                                 () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.PERMISSION_NOT_FOUND));
-        FnCommon.coppyNonNullProperties(permission, permissionRequest);
-        entityManager.merge(permission);
+        permission.setName(request.getName());
         return mapPermissionToPermissionResponse(permission);
     }
 

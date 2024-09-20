@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.ecommercefashion.annotations.EnumPattern;
+import org.example.ecommercefashion.annotations.ValidPassword;
 import org.example.ecommercefashion.annotations.ValidPhoneNumber;
 import org.example.ecommercefashion.enums.GenderEnum;
 
@@ -19,7 +20,7 @@ public class UserRequest {
     @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @ValidPassword
     private String password;
 
     @NotNull(message = "Full name is required")

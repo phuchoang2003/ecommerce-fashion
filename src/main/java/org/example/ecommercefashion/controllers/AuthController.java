@@ -1,24 +1,20 @@
 package org.example.ecommercefashion.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.example.ecommercefashion.dtos.request.FacebookLoginRequest;
-import org.example.ecommercefashion.dtos.request.LoginRequest;
-import org.example.ecommercefashion.dtos.request.ResetPasswordRequest;
-import org.example.ecommercefashion.dtos.request.UserRequest;
+import org.example.ecommercefashion.dtos.request.*;
 import org.example.ecommercefashion.dtos.response.AuthResponse;
 import org.example.ecommercefashion.dtos.response.LoginResponse;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.UserResponse;
+import org.example.ecommercefashion.enums.TokenType;
+import org.example.ecommercefashion.security.Protected;
 import org.example.ecommercefashion.services.AuthenticationService;
 import org.example.ecommercefashion.services.Oauth2Service;
-import org.example.ecommercefashion.services.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,30 +23,38 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-    private final RefreshTokenService refreshTokenService;
 
     private final Oauth2Service oauth2Service;
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        return authenticationService.login(loginRequest);
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        return ResponseEntity.ok(authenticationService.login(loginRequest, request));
     }
 
     @PostMapping("/signup")
-    public UserResponse signUp(@Valid @RequestBody UserRequest userRequest) {
-        return authenticationService.signUp(userRequest);
+    public ResponseEntity<UserResponse> signUp(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(authenticationService.signUp(userRequest));
     }
+
+
+    @PostMapping("/request-reset-password")
+    public ResponseEntity<MessageResponse> requestResetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        return ResponseEntity.ok(authenticationService.requestResetPassword(request));
+    }
+
 
     @PostMapping("/reset-password")
-    public MessageResponse resetPassword(
-            @Valid @RequestBody ResetPasswordRequest resetPasswordRequest, String token) {
-        return authenticationService.resetPassword(resetPasswordRequest, token);
+    public ResponseEntity<MessageResponse> resetPassword(@RequestParam("token") String token, @RequestBody @Valid ForgotPasswordRequest request) {
+        return ResponseEntity.ok(authenticationService.resetPassword(request.getNewPassword(), token));
     }
 
+
     @PostMapping("/refresh-token")
+    @Protected(TokenType.REFRESH_TOKEN)
     public ResponseEntity<AuthResponse> refreshToken(
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AuthResponse res = refreshTokenService.refreshToken(request, response);
+            @RequestHeader("Authorization") String refreshToken,
+            HttpServletRequest request) {
+        AuthResponse res = authenticationService.refreshToken(refreshToken, request);
         return ResponseEntity.ok(res);
     }
 

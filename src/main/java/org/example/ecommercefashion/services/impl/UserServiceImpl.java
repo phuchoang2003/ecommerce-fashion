@@ -9,15 +9,17 @@ import org.example.ecommercefashion.dtos.request.UserRoleAssignRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
 import org.example.ecommercefashion.dtos.response.UserResponse;
-import org.example.ecommercefashion.entities.mysql.Role;
-import org.example.ecommercefashion.entities.mysql.User;
+import org.example.ecommercefashion.entities.postgres.Role;
+import org.example.ecommercefashion.entities.postgres.User;
+import org.example.ecommercefashion.enums.TokenType;
 import org.example.ecommercefashion.exceptions.ErrorMessage;
-import org.example.ecommercefashion.repositories.mysql.UserRepository;
+import org.example.ecommercefashion.repositories.postgres.UserRepository;
+import org.example.ecommercefashion.security.JwtUtils;
 import org.example.ecommercefashion.services.UserService;
+import org.example.ecommercefashion.utils.PasswordUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +36,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.USER_NOT_FOUND.val()));
+    }
 
     @Override
     public void checkUsersExists(Set<Long> userIds) {
@@ -53,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse createUser(UserRequest userRequest) {
         User user = new User();
         FnCommon.copyProperties(user, userRequest);
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setPassword(PasswordUtils.encode(userRequest.getPassword()));
         entityManager.persist(user);
         return mapEntityToResponse(user);
     }
@@ -82,21 +90,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getUserById(Long id) {
-        User user = entityManager.find(User.class, id);
-        if (user == null) {
-            return null;
-        }
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.USER_NOT_FOUND.val()));
+    }
+
+    @Override
+    public UserResponse getUserResponseById(Long id) {
+        User user = getUserById(id);
         return mapEntityToResponse(user);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public MessageResponse assignRoleAdmin(String email) {
-        User user =
-                Optional.ofNullable(userRepository.findByEmail(email))
-                        .orElseThrow(
-                                () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.USER_NOT_FOUND.val()));
-
+        User user = getUserByEmail(email);
         user.setIsAdmin(true);
         entityManager.merge(user);
 
@@ -104,18 +111,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessageResponse changePassword(ChangePasswordRequest changePasswordRequest) {
-        User user =
-                Optional.ofNullable(userRepository.findByEmail(changePasswordRequest.getEmail()))
-                        .orElseThrow(
-                                () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.USER_NOT_FOUND.val()));
+    public MessageResponse changePassword(ChangePasswordRequest changePasswordRequest, String token) {
+        Long userId = Long.parseLong(jwtUtils.extractUserId(token, TokenType.ACCESS));
+        User user = getUserById(userId);
+
         String currentPassword = user.getPassword();
-        if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), currentPassword)) {
+        if (PasswordUtils.verifyPassword(changePasswordRequest.getNewPassword(), currentPassword)) {
             throw new ExceptionHandle(
                     HttpStatus.BAD_REQUEST, ErrorMessage.CURRENT_PASSWORD_SAME_NEW_PASSWORD.val());
         }
-        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-        entityManager.merge(user);
+        user.setPassword(PasswordUtils.encode(changePasswordRequest.getNewPassword()));
         return MessageResponse.builder().message("Password changed successfully").build();
     }
 
@@ -128,10 +133,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MessageResponse assignUserRole(UserRoleAssignRequest userRoleAssignRequest) {
-        User user =
-                Optional.ofNullable(userRepository.findByEmail(userRoleAssignRequest.getEmail()))
-                        .orElseThrow(
-                                () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.USER_NOT_FOUND.val()));
+        User user = getUserByEmail(userRoleAssignRequest.getEmail());
 
         for (Long roleId : userRoleAssignRequest.getRoleIds()) {
             Role role =

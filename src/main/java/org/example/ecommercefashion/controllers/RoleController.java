@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommercefashion.dtos.request.RoleRequest;
 import org.example.ecommercefashion.dtos.response.RoleResponse;
 import org.example.ecommercefashion.services.RoleService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,7 +16,6 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping
-    @PreAuthorize("hasRole('STAFF') AND hasAuthority('CREATE_PRODUCT')")
     public RoleResponse createRole(@Valid @RequestBody RoleRequest roleRequest) {
         return roleService.createRole(roleRequest);
     }

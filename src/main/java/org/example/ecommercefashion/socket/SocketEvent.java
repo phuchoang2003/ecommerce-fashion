@@ -6,7 +6,8 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.extern.slf4j.Slf4j;
 import org.example.ecommercefashion.entities.mongo.Message;
-import org.example.ecommercefashion.security.JwtService;
+import org.example.ecommercefashion.enums.TokenType;
+import org.example.ecommercefashion.security.JwtUtils;
 import org.example.ecommercefashion.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,11 +20,11 @@ public class SocketEvent {
     private MessageService messageService;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtUtils jwtUtils;
 
     private Long getSenderId(SocketIOClient client) {
         String token = client.getHandshakeData().getHttpHeaders().get("Authorization");
-        return jwtService.getUserId(token, jwtService.getJwtKey());
+        return Long.parseLong(jwtUtils.extractUserId(token, TokenType.ACCESS));
     }
 
 

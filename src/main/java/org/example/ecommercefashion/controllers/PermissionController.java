@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommercefashion.dtos.request.PermissionRequest;
 import org.example.ecommercefashion.dtos.response.PermissionResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
-import org.example.ecommercefashion.entities.mysql.Permission;
+import org.example.ecommercefashion.entities.postgres.Permission;
 import org.example.ecommercefashion.services.PermissionService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +20,8 @@ public class PermissionController {
 
     @PostMapping
     public PermissionResponse createPermission(
-            @Valid @RequestBody PermissionRequest permissionRequest) {
-        return permissionService.createPermission(permissionRequest);
+            @RequestBody @Valid PermissionRequest request) {
+        return permissionService.createPermission(request);
     }
 
     @GetMapping("/{id}")
@@ -36,8 +36,9 @@ public class PermissionController {
 
     @PutMapping("/{id}")
     public PermissionResponse updatePermission(
-            @PathVariable Long id, @Valid @RequestBody PermissionRequest permissionRequest) {
-        return permissionService.updatePermission(id, permissionRequest);
+            @Valid @RequestBody PermissionRequest request,
+            @PathVariable Long id) {
+        return permissionService.updatePermission(id, request);
     }
 
     @GetMapping

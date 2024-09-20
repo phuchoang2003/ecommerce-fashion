@@ -1,14 +1,13 @@
 package org.example.ecommercefashion.socket;
 
 import com.corundumstudio.socketio.SocketIOServer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 @org.springframework.context.annotation.Configuration
 public class SocketIOConfig {
-    @Autowired
-    SocketIOInterceptor interceptor;
+//    @Autowired
+//    SocketIOInterceptor interceptor;
 
     @Value("${socketio.host}")
     private String host;
@@ -22,7 +21,7 @@ public class SocketIOConfig {
         config.setHostname(host);
         config.setPort(port);
         SocketIOServer server = new SocketIOServer(config);
-        server.addConnectListener(interceptor);
+//        server.addConnectListener(interceptor);
         return server;
     }
 

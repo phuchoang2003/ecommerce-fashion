@@ -6,7 +6,7 @@ import org.example.ecommercefashion.dtos.request.UserRoleAssignRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
 import org.example.ecommercefashion.dtos.response.UserResponse;
-import org.example.ecommercefashion.entities.mysql.User;
+import org.example.ecommercefashion.entities.postgres.User;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Set;
@@ -20,15 +20,20 @@ public interface UserService {
 
     MessageResponse deleteUser(Long id);
 
-    UserResponse getUserById(Long id);
+    UserResponse getUserResponseById(Long id);
 
     MessageResponse assignRoleAdmin(String email);
 
-    MessageResponse changePassword(ChangePasswordRequest changePasswordRequest);
+    MessageResponse changePassword(ChangePasswordRequest changePasswordRequest, String token);
 
     ResponsePage<User, UserResponse> getAllUsers(Pageable pageable);
 
     MessageResponse assignUserRole(UserRoleAssignRequest userRoleAssignRequest);
 
     void checkUsersExists(Set<Long> userIds);
+
+    User getUserByEmail(String email);
+
+    User getUserById(Long id);
+    
 }
