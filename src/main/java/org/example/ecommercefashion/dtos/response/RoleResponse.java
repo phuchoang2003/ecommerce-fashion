@@ -1,19 +1,25 @@
 package org.example.ecommercefashion.dtos.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import org.example.ecommercefashion.entities.postgres.Role;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class RoleResponse {
+@Builder
+public record RoleResponse(
 
-    private Long id;
+        Long id,
 
-    private String name;
+        String name,
 
-    private Set<PermissionResponse> permissions;
+        Set<PermissionResponse> permissions
+) {
+    public static RoleResponse fromEntity(Role role) {
+        return RoleResponse.builder()
+                .id(role.getId())
+                .name(role.getName())
+                .permissions(role.getPermissions().stream().map(PermissionResponse::fromEntity).collect(Collectors.toSet()))
+                .build();
+    }
 }

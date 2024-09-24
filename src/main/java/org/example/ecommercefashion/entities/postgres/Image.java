@@ -3,6 +3,8 @@ package org.example.ecommercefashion.entities.postgres;
 
 import lombok.*;
 import org.example.ecommercefashion.enums.TypeImage;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -30,8 +32,9 @@ public class Image extends BaseEntity {
 
     @Column(name = "title")
     private String title;
-    
+
     @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
     private ProductImage productImage;
 
 }

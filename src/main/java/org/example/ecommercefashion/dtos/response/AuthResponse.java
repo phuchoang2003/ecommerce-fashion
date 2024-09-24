@@ -1,14 +1,13 @@
 package org.example.ecommercefashion.dtos.response;
 
-import lombok.*;
+import lombok.Builder;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+
 @Builder
-public class AuthResponse {
+public record AuthResponse(
 
-  private String accessToken;
+        String accessToken,
 
-  private String refreshToken;
+        String refreshToken
+) {
 }

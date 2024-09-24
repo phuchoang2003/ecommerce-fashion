@@ -5,7 +5,6 @@ import com.longnh.utils.FnCommon;
 import lombok.RequiredArgsConstructor;
 import org.example.ecommercefashion.dtos.request.RoleRequest;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
-import org.example.ecommercefashion.dtos.response.PermissionResponse;
 import org.example.ecommercefashion.dtos.response.RoleResponse;
 import org.example.ecommercefashion.entities.postgres.Permission;
 import org.example.ecommercefashion.entities.postgres.Role;
@@ -44,22 +43,21 @@ public class RoleServiceImpl implements RoleService {
 
         role.setPermissions(permissionSet);
         entityManager.persist(role);
-        return mapRoleToRoleResponse(role);
+        return RoleResponse.fromEntity(role);
     }
 
     @Override
     @Transactional
     public RoleResponse updateRole(Long id, RoleRequest roleRequest) {
-        Optional<Role> role =
-                Optional.ofNullable(
-                        Optional.of(entityManager.find(Role.class, id))
-                                .orElseThrow(
-                                        () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.ROLE_NOT_FOUND)));
-
-        FnCommon.coppyNonNullProperties(role, roleRequest);
+        Role role = entityManager.find(Role.class, id);
+        if (role == null) {
+            throw new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.ROLE_NOT_FOUND);
+        }
+        FnCommon.copyNonNullProperties(role, roleRequest);
         entityManager.merge(role);
-        return mapRoleToRoleResponse(role.get());
+        return RoleResponse.fromEntity(role);
     }
+
 
     @Override
     public RoleResponse getRoleById(Long id) {
@@ -67,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
         if (role == null) {
             throw new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.ROLE_NOT_FOUND);
         }
-        return mapRoleToRoleResponse(role);
+        return RoleResponse.fromEntity(role);
     }
 
     @Override
@@ -80,20 +78,5 @@ public class RoleServiceImpl implements RoleService {
         return MessageResponse.builder().message("Role delete successfully").build();
     }
 
-    private RoleResponse mapRoleToRoleResponse(Role role) {
-        RoleResponse roleResponse = new RoleResponse();
-        FnCommon.coppyNonNullProperties(roleResponse, role);
-        roleResponse.setPermissions(mapPermissionToPermissionResponse(role.getPermissions()));
-        return roleResponse;
-    }
 
-    private Set<PermissionResponse> mapPermissionToPermissionResponse(Set<Permission> permissions) {
-        Set<PermissionResponse> permissionResponses = new HashSet<>();
-        for (Permission permission : permissions) {
-            PermissionResponse permissionResponse = new PermissionResponse();
-            FnCommon.coppyNonNullProperties(permissionResponse, permission);
-            permissionResponses.add(permissionResponse);
-        }
-        return permissionResponses;
-    }
 }

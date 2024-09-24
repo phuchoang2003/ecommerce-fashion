@@ -12,7 +12,11 @@ public class RedisConfig {
     public RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<?, ?> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
+
+        // serialize value string
         template.setKeySerializer(new StringRedisSerializer());
+
+
         return template;
     }
 }
