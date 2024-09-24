@@ -36,6 +36,8 @@ public class ProductVariant extends BaseEntity {
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     @JsonBackReference
     private Product product;
+
+    
     @Column(name = "product_id")
     private Long productId;
     @Type(type = "jsonb")

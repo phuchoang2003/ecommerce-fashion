@@ -32,7 +32,7 @@ public class PermissionServiceImpl implements PermissionService {
         Permission permission = new Permission();
         permission.setName(request.getName());
         entityManager.persist(permission);
-        return mapPermissionToPermissionResponse(permission);
+        return PermissionResponse.fromEntity(permission);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PermissionServiceImpl implements PermissionService {
                         .orElseThrow(
                                 () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.PERMISSION_NOT_FOUND));
         permission.setName(request.getName());
-        return mapPermissionToPermissionResponse(permission);
+        return PermissionResponse.fromEntity(permission);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
                 Optional.ofNullable(entityManager.find(Permission.class, id))
                         .orElseThrow(
                                 () -> new ExceptionHandle(HttpStatus.NOT_FOUND, ErrorMessage.PERMISSION_NOT_FOUND));
-        return mapPermissionToPermissionResponse(permission);
+        return PermissionResponse.fromEntity(permission);
     }
 
     @Override
@@ -72,10 +72,5 @@ public class PermissionServiceImpl implements PermissionService {
         return MessageResponse.builder().message("Permission delete successfully").build();
     }
 
-    private PermissionResponse mapPermissionToPermissionResponse(Permission permission) {
-        PermissionResponse permissionResponse = new PermissionResponse();
-        permissionResponse.setId(permission.getId());
-        permissionResponse.setName(permission.getName());
-        return permissionResponse;
-    }
+
 }

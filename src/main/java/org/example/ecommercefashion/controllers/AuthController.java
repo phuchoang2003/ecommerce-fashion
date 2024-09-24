@@ -1,13 +1,13 @@
 package org.example.ecommercefashion.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ecommercefashion.annotations.Protected;
 import org.example.ecommercefashion.dtos.request.*;
 import org.example.ecommercefashion.dtos.response.AuthResponse;
 import org.example.ecommercefashion.dtos.response.LoginResponse;
 import org.example.ecommercefashion.dtos.response.MessageResponse;
 import org.example.ecommercefashion.dtos.response.UserResponse;
 import org.example.ecommercefashion.enums.TokenType;
-import org.example.ecommercefashion.security.Protected;
 import org.example.ecommercefashion.services.AuthenticationService;
 import org.example.ecommercefashion.services.Oauth2Service;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,6 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
-
 
     private final Oauth2Service oauth2Service;
 

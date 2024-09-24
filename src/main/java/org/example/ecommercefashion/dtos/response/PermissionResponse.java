@@ -1,15 +1,19 @@
 package org.example.ecommercefashion.dtos.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import org.example.ecommercefashion.entities.postgres.Permission;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class PermissionResponse {
+@Builder
+public record PermissionResponse(
 
-  private Long id;
+        Long id,
 
-  private String name;
+        String name
+) {
+    public static PermissionResponse fromEntity(Permission permission) {
+        return PermissionResponse.builder()
+                .id(permission.getId())
+                .name(permission.getName())
+                .build();
+    }
 }

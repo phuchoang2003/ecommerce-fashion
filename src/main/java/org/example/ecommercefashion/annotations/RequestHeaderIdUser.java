@@ -1,15 +1,11 @@
-package org.example.ecommercefashion.security;
-
-
-import org.example.ecommercefashion.enums.TokenType;
+package org.example.ecommercefashion.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD})
+@Target({ElementType.PARAMETER, ElementType.TYPE_PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Protected {
-    TokenType value();
+public @interface RequestHeaderIdUser {
 }

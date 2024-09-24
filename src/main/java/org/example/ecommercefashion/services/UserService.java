@@ -14,11 +14,13 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public interface UserService {
 
-    UserResponse createUser(UserRequest userRequest);
+    User createUser(UserRequest userRequest);
+
+    UserResponse createUserResponse(UserRequest userRequest);
 
     UserResponse updateUser(Long id, UserRequest userRequest);
 
-    MessageResponse deleteUser(Long id);
+    void deleteUser(Long id);
 
     UserResponse getUserResponseById(Long id);
 
@@ -35,5 +37,5 @@ public interface UserService {
     User getUserByEmail(String email);
 
     User getUserById(Long id);
-    
+
 }

@@ -45,6 +45,9 @@ public enum ErrorMessage implements BaseErrorMessage {
     ONLY_ALLOW_ONE_ATTRIBUTE_CORESPONDING_ATTRIBUTE_VALUE("Only allow one attribute corresponding attribute value"),
     CATEGORY_NOT_SUPPORT_SIZE_CHART("Category not support size chart"),
     CATEGORY_ONLY_SUPPORT_SIZE_CHART("Category only support size chart"),
+    CART_NOT_FOUND("Cart not found"),
+    PRODUCT_VARIANT_NOT_FOUND("Product variant not found"),
+    CART_ITEM_NOT_FOUND("Cart item not found"),
     ;
 
     public String val;

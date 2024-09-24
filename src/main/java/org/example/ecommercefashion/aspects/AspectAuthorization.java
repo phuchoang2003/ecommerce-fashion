@@ -1,4 +1,4 @@
-package org.example.ecommercefashion.security;
+package org.example.ecommercefashion.aspects;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.example.ecommercefashion.annotations.Protected;
 import org.example.ecommercefashion.enums.TokenType;
+import org.example.ecommercefashion.security.JwtUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,7 @@ public class AspectAuthorization {
     private final JwtUtils jwtUtils;
 
 
-    @Around("@annotation(org.example.ecommercefashion.security.Protected)")
+    @Around("@annotation(org.example.ecommercefashion.annotations.Protected)")
     public Object authorization(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

@@ -17,6 +17,7 @@ import org.example.ecommercefashion.repositories.postgres.UserRepository;
 import org.example.ecommercefashion.security.JwtUtils;
 import org.example.ecommercefashion.services.UserService;
 import org.example.ecommercefashion.utils.PasswordUtils;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -58,12 +59,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserResponse createUser(UserRequest userRequest) {
+    public User createUser(UserRequest userRequest) {
         User user = new User();
         FnCommon.copyProperties(user, userRequest);
         user.setPassword(PasswordUtils.encode(userRequest.getPassword()));
         entityManager.persist(user);
-        return mapEntityToResponse(user);
+        return user;
+    }
+
+    @Override
+    public UserResponse createUserResponse(UserRequest userRequest) {
+        UserService proxy = (UserService) AopContext.currentProxy();
+        User user = proxy.createUser(userRequest);
+        return UserResponse.fromEntity(user);
     }
 
     @Override
@@ -75,18 +83,18 @@ public class UserServiceImpl implements UserService {
         }
         FnCommon.copyProperties(user, userRequest);
         entityManager.merge(user);
-        return mapEntityToResponse(user);
+        return UserResponse.fromEntity(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public MessageResponse deleteUser(Long id) {
+    public void deleteUser(Long id) {
         User user = entityManager.find(User.class, id);
         if (user != null) {
             user.setDeleted(true);
             entityManager.merge(user);
         }
-        return MessageResponse.builder().message("User deleted successfully").build();
+        MessageResponse.builder().message("User deleted successfully").build();
     }
 
     @Override
@@ -98,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUserResponseById(Long id) {
         User user = getUserById(id);
-        return mapEntityToResponse(user);
+        return UserResponse.fromEntity(user);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -147,9 +155,4 @@ public class UserServiceImpl implements UserService {
         return MessageResponse.builder().message("Role assigned successfully").build();
     }
 
-    private UserResponse mapEntityToResponse(User user) {
-        UserResponse userResponse = new UserResponse();
-        FnCommon.copyProperties(userResponse, user);
-        return userResponse;
-    }
 }

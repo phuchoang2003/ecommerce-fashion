@@ -99,6 +99,7 @@ spring:
       register-types: auto
       ddl-auto: update
     open-in-view: false
+    show-sql: true
 
   data:
     mongodb:

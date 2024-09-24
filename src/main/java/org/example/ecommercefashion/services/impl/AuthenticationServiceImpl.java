@@ -19,10 +19,7 @@ import org.example.ecommercefashion.enums.TokenType;
 import org.example.ecommercefashion.exceptions.ErrorMessage;
 import org.example.ecommercefashion.repositories.postgres.TokenRepository;
 import org.example.ecommercefashion.security.JwtUtils;
-import org.example.ecommercefashion.services.AuthenticationService;
-import org.example.ecommercefashion.services.ResetPasswordResetTokenService;
-import org.example.ecommercefashion.services.TokenService;
-import org.example.ecommercefashion.services.UserService;
+import org.example.ecommercefashion.services.*;
 import org.example.ecommercefashion.utils.HashUtils;
 import org.example.ecommercefashion.utils.PasswordUtils;
 import org.springframework.http.HttpStatus;
@@ -39,6 +36,9 @@ import java.util.HashMap;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final TokenService tokenService;
+
+    private final CartService cartService;
+
 
     private final ResetPasswordResetTokenService resetPasswordResetTokenService;
 
@@ -123,7 +123,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public UserResponse signUp(UserRequest userRequest) {
-        return userService.createUser(userRequest);
+        User user = userService.createUser(userRequest);
+        cartService.create(user);
+        return UserResponse.fromEntity(user);
     }
 
     @Override
