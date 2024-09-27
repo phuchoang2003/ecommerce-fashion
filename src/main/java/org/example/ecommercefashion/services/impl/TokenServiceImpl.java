@@ -11,6 +11,7 @@ import org.example.ecommercefashion.repositories.postgres.TokenRepository;
 import org.example.ecommercefashion.security.JwtUtils;
 import org.example.ecommercefashion.services.TokenService;
 import org.example.ecommercefashion.utils.HashUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,8 @@ public class TokenServiceImpl implements TokenService {
 
     private final JwtUtils jwtUtils;
 
-    private final RedisTemplate<String, Map<String, Object>> redisTemplateMap;
+    @Autowired
+    private RedisTemplate<String, Map<String, Object>> redisTemplateMap;
 
     @Override
     public List<JwtToken> findByHashToken(String hashToken, TokenType type) {

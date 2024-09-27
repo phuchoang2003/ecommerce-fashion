@@ -48,6 +48,7 @@ public enum ErrorMessage implements BaseErrorMessage {
     CART_NOT_FOUND("Cart not found"),
     PRODUCT_VARIANT_NOT_FOUND("Product variant not found"),
     CART_ITEM_NOT_FOUND("Cart item not found"),
+    ORDER_NOT_FOUND("Order not found"),
     ;
 
     public String val;

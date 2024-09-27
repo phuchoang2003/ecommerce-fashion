@@ -13,6 +13,7 @@ import org.example.ecommercefashion.entities.postgres.User;
 import org.example.ecommercefashion.enums.TokenType;
 import org.example.ecommercefashion.exceptions.ErrorMessage;
 import org.example.ecommercefashion.repositories.postgres.PermissionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,9 @@ public class JwtUtils {
 
     private final PermissionRepository permissionRepository;
 
-    private final RedisTemplate<String, Map<String, Object>> redisTemplateMap;
+
+    @Autowired
+    private RedisTemplate<String, Map<String, Object>> redisTemplateMap;
 
 
     @Value("${jwt.key}")

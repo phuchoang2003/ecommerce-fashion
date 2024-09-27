@@ -1,5 +1,6 @@
 package org.example.ecommercefashion.services.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.longnh.exceptions.ExceptionHandle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,9 @@ import org.example.ecommercefashion.services.CartService;
 import org.example.ecommercefashion.services.ImageService;
 import org.example.ecommercefashion.services.ProductService;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -26,7 +28,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,18 +48,17 @@ public class CartServiceImpl implements CartService {
 
     private final ImageService imageService;
 
-    private final RedisTemplate<String, CartResponse> redisTemplate;
+    private final ObjectMapper mapper;
+
+    @Autowired
+    @Qualifier("genericRedisTemplate")
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     private String getKeyRedis(Long userId) {
         return "cart:" + userId;
     }
 
-
-    @PostConstruct
-    public void init() {
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(CartResponse.class));
-    }
 
     @Async("ioTaskExecutor")
     @Retryable(
@@ -187,10 +187,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse getAllCartItems(Long userId) {
         String key = getKeyRedis(userId);
-        CartResponse cartResponse = redisTemplate.opsForValue().get(key);
-        if (cartResponse != null) {
+        Object value = redisTemplate.opsForValue().get(key);
+        if (value != null) {
             log.warn("cache hit");
-            return cartResponse;
+            return mapper.convertValue(redisTemplate.opsForValue().get(key), CartResponse.class);
         }
 
         log.warn("cache miss");
