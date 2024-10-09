@@ -41,14 +41,14 @@ public class MailjetSenderImpl implements EmailSender {
             try {
                 MailjetResponse response = mailjetClient.post(request);
                 if (response.getStatus() == 200) {
-                    log.info("Email sent successfully.");
+                    System.out.println("Email sent successfully.");
                     return null;
                 } else {
-                    log.info("Failed to send email: " + response.getData());
+                    System.out.println("Failed to send email: " + response.getData());
                     throw new RuntimeException("Failed to send email.");
                 }
             } catch (Exception e) {
-                log.info("Error while sending email: " + e.getMessage());
+                System.out.println("Error while sending email: " + e.getMessage());
                 throw new RuntimeException("Error while sending email.", e);
             }
         });

@@ -34,7 +34,6 @@ public enum ErrorMessage implements BaseErrorMessage {
     ATTRIBUTE_VALUE_DUPLICATE("Attribute value is already exists"),
     ATTRIBUTE_DISPLAY_VALUE_DUPLICATE("Attribute display value is already exists"),
     UNIT_DUPLICATE("Unit is already exists"),
-
     UNIT_NOT_FOUND("Unit not found"),
     DISPLAY_UNIT_DUPLICATE("Display unit is already exists"),
     INVALID_PASSWORD("Invalid password"),
@@ -49,6 +48,11 @@ public enum ErrorMessage implements BaseErrorMessage {
     PRODUCT_VARIANT_NOT_FOUND("Product variant not found"),
     CART_ITEM_NOT_FOUND("Cart item not found"),
     ORDER_NOT_FOUND("Order not found"),
+    QUANTITY_NOT_ENOUGH("Quantity not enough"),
+    QUANTITY_CONFLICT("Order processing failed due to a conflict. Please try again."),
+    FORBIDDEN("You don't have permission to access the resource"),
+    PAYMENT_TRANSACTION_NOT_FOUND("Payment transaction not found"),
+    PAYMENT_SESSION_TIME_OUT("Payment session time out"),
     ;
 
     public String val;

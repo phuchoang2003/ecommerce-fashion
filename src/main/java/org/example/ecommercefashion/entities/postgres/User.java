@@ -53,6 +53,10 @@ public class User extends BaseEntity implements Serializable {
     @Column(nullable = false, name = "is_admin")
     private Boolean isAdmin = false;
 
+    @Column(name = "stripe_customer_id", unique = true)
+    private String stripeCustomerId;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",

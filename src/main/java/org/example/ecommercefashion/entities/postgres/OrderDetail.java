@@ -34,7 +34,6 @@ public class OrderDetail extends BaseEntity {
 
 
     @OneToMany(mappedBy = "orderDetail", fetch = FetchType.LAZY, cascade = {
-            CascadeType.MERGE,
             CascadeType.PERSIST
     })
     @JsonManagedReference

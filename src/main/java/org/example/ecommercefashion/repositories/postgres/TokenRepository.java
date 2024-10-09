@@ -19,4 +19,5 @@ public interface TokenRepository extends JpaRepository<JwtToken, Long> {
     @Query(value = "SELECT nextval('jwt_token_id_seq')", nativeQuery = true)
     Long getNextSeq();
 
+
 }

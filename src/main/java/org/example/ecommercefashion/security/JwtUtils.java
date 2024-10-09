@@ -124,6 +124,7 @@ public class JwtUtils {
         claims.put(ClaimKey.EMAIL.val, user.getEmail());
         claims.put(ClaimKey.FULL_NAME.val, user.getFullName());
         claims.put(ClaimKey.REX.val, System.currentTimeMillis() + jwtRefreshExpiration);
+        claims.put(ClaimKey.CUSTOMER_STRIPE_ID.val, user.getStripeCustomerId() != null ? user.getStripeCustomerId() : "null");
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -201,7 +202,8 @@ public class JwtUtils {
         IS_ADMIN("is-admin"),
         REX("rex"),
         PERMISSION("permissions"),
-        REFRESH_TOKEN_ID("refresh-token-id");
+        REFRESH_TOKEN_ID("refresh-token-id"),
+        CUSTOMER_STRIPE_ID("customer-stripe-id");
 
 
         public final String val;

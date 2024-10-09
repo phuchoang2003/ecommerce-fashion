@@ -129,4 +129,7 @@ public class Product extends BaseEntity {
         this.productImages.removeAll(productImagesToRemove);
     }
 
+    public void calculateQuantity() {
+        this.quantity = this.productVariants.stream().map(ProductVariant::getQuantity).reduce(0, Integer::sum);
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.OptimisticLockException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,65 @@ public class ProductServiceImpl implements ProductService {
 
     private final SizeChartService sizeChartService;
 
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void processQuantityProduct(OrderDetail orderDetail, boolean isIncreased) {
+        Map<Product, Integer> productQuantityMap = new HashMap<>();
+        Map<ProductVariant, Integer> variantQuantityMap = new HashMap<>();
+
+        for (OrderItem item : orderDetail.getOrderItems()) {
+            int quantity = item.getQuantity();
+            if (item.getProductVariant() != null)
+                variantQuantityMap.merge(item.getProductVariant(), quantity, Integer::sum);
+            else productQuantityMap.merge(item.getProduct(), quantity, Integer::sum);
+        }
+
+        int attempts = 3;
+        while (attempts > 0) {
+            try {
+                changeQuantityProduct(productQuantityMap, isIncreased);
+                changeQuantityProductVariant(variantQuantityMap, isIncreased);
+                return;
+            } catch (OptimisticLockException e) {
+                attempts--;
+                if (attempts == 0) {
+                    throw new ExceptionHandle(HttpStatus.CONFLICT, ErrorMessage.QUANTITY_CONFLICT.val());
+                }
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    private void changeQuantityProduct(Map<Product, Integer> products, boolean isIncreased) {
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            Product product = entry.getKey();
+            Integer quantity = entry.getValue();
+            if (isIncreased) product.setQuantity(product.getQuantity() + quantity);
+            else {
+                if (product.getQuantity() >= quantity) product.setQuantity(product.getQuantity() - quantity);
+                else throw new ExceptionHandle(HttpStatus.BAD_REQUEST, ErrorMessage.QUANTITY_NOT_ENOUGH.val());
+            }
+        }
+    }
+
+    private void changeQuantityProductVariant(Map<ProductVariant, Integer> productVariants, boolean isIncreased) {
+        for (Map.Entry<ProductVariant, Integer> entry : productVariants.entrySet()) {
+            ProductVariant variant = entry.getKey();
+            Integer quantity = entry.getValue();
+            if (isIncreased)
+                variant.setQuantity(variant.getQuantity() + quantity);
+            else {
+                if (variant.getQuantity() >= quantity) variant.setQuantity(variant.getQuantity() - quantity);
+                else throw new ExceptionHandle(HttpStatus.BAD_REQUEST, ErrorMessage.QUANTITY_NOT_ENOUGH.val());
+            }
+            variant.getProduct().calculateQuantity();
+        }
+    }
 
     @Override
     public ResponsePage<Product, ProductBriefResponse> findAll(Pageable pageable) {

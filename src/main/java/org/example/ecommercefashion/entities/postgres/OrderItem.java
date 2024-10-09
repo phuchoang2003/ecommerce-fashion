@@ -18,14 +18,14 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 public class OrderItem extends BaseEntity {
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
 
     @Column(name = "product_id")
     private Long productId;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_variant_id", insertable = false, updatable = false)
     private ProductVariant productVariant;
 

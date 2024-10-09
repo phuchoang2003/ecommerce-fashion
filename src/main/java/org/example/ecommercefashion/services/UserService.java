@@ -14,6 +14,7 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public interface UserService {
 
+
     User createUser(UserRequest userRequest);
 
     UserResponse createUserResponse(UserRequest userRequest);

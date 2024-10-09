@@ -4,6 +4,7 @@ import org.example.ecommercefashion.dtos.request.ProductRequest;
 import org.example.ecommercefashion.dtos.response.ProductBriefResponse;
 import org.example.ecommercefashion.dtos.response.ProductDetailResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
+import org.example.ecommercefashion.entities.postgres.OrderDetail;
 import org.example.ecommercefashion.entities.postgres.Product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,5 +24,6 @@ public interface ProductService {
 
     ProductDetailResponse update(ProductRequest request, List<MultipartFile> files, Long id);
 
+    void processQuantityProduct(OrderDetail orderDetail, boolean isIncreased);
 
 }

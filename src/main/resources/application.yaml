@@ -8,6 +8,14 @@ logging:
     root: WARN
 
 
+stripe:
+  secret:
+    key: ${STRIPE_SECRET_KEY}
+  signing:
+    secret: ${STRIPE_SIGNING_SECRET}
+
+
+
 jwt:
   key: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION_MS}

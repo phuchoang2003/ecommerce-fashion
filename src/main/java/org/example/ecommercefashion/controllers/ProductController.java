@@ -6,6 +6,7 @@ import org.example.ecommercefashion.dtos.response.ProductBriefResponse;
 import org.example.ecommercefashion.dtos.response.ProductDetailResponse;
 import org.example.ecommercefashion.dtos.response.ResponsePage;
 import org.example.ecommercefashion.entities.postgres.Product;
+import org.example.ecommercefashion.services.OrderService;
 import org.example.ecommercefashion.services.ProductService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity<ProductDetailResponse> create(@RequestPart(value = "request") @Valid ProductRequest request,
@@ -50,4 +53,13 @@ public class ProductController {
     public ResponseEntity<ResponsePage<Product, ProductBriefResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(pageable));
     }
+
+//    @PostMapping("test-concurrent")
+//    @Protected(TokenType.ACCESS)
+//    public ResponseEntity<?> testConcurrent(@RequestBody @Valid OrderRequest request, @RequestHeaderIdUser Long userId) {
+//        OrderDetail orderDetail = orderService.createOrderEntity(request, userId);
+//        productService.processQuantityProduct(orderDetail.getId());
+//        System.out.println("Ping");
+//        return ResponseEntity.ok().build();
+//    }
 }
