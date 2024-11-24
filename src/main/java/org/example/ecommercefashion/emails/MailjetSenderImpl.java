@@ -7,6 +7,8 @@ import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.resource.Emailv31;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.ecommercefashion.entities.postgres.Email;
+import org.example.ecommercefashion.services.EmailService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -18,24 +20,25 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @Slf4j
 public class MailjetSenderImpl implements EmailSender {
+    private static final String NAME_COMPANY = "Fashion Store";
     private final MailjetClient mailjetClient;
-
+    private final EmailService emailService;
 
     @Override
-    public CompletableFuture<Void> sendEmailApi(String sendFrom, String sendTo, String subject, String content) {
+    public CompletableFuture<Void> sendEmailApi(Long idTemplate, String sendTo, String sendFrom, Object object) {
+        Email email = emailService.createEmail(idTemplate, sendTo, sendFrom, object);
+
         MailjetRequest request = new MailjetRequest(Emailv31.resource)
                 .property(Emailv31.MESSAGES, new JSONArray()
                         .put(new JSONObject()
                                 .put(Emailv31.Message.FROM, new JSONObject()
-                                        .put("Email", "pilot@mailjet.com")
-                                        .put("Name", "Mailjet Pilot"))
+                                        .put("Email", email.getSendFrom()))
                                 .put(Emailv31.Message.TO, new JSONArray()
                                         .put(new JSONObject()
-                                                .put("Email", "passenger1@mailjet.com")
-                                                .put("Name", "passenger 1")))
-                                .put(Emailv31.Message.SUBJECT, "Your email flight plan!")
-                                .put(Emailv31.Message.TEXTPART, "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!")
-                                .put(Emailv31.Message.HTMLPART, "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!")));
+                                                .put("Email", email.getSendTo())))
+                                .put(Emailv31.Message.SUBJECT, email.getSubject())
+                                .put(Emailv31.Message.HTMLPART, email.getBody())));
+
 
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -53,4 +56,8 @@ public class MailjetSenderImpl implements EmailSender {
             }
         });
     }
+
+    // handle failure
+
+
 }

@@ -53,6 +53,9 @@ public enum ErrorMessage implements BaseErrorMessage {
     FORBIDDEN("You don't have permission to access the resource"),
     PAYMENT_TRANSACTION_NOT_FOUND("Payment transaction not found"),
     PAYMENT_SESSION_TIME_OUT("Payment session time out"),
+    EMAIL_TEMPLATE_NOT_FOUND("Email template not found"),
+    EMAIL_NOT_FOUND("Email not found"),
+    EMAIL_TEMPLATE_VARIABLE_NOT_FOUND("Variable not found with placeholder name "),
     ;
 
     public String val;

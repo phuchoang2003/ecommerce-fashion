@@ -37,9 +37,10 @@ public class ProductVariant extends BaseEntity {
     @JsonBackReference
     private Product product;
 
-    
+
     @Column(name = "product_id")
     private Long productId;
+
     @Type(type = "jsonb")
     @Column(name = "variants", columnDefinition = "jsonb")
     private Set<Variant> variants;

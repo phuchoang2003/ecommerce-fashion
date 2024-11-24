@@ -15,10 +15,10 @@ public class EmailFactory {
 
 
     @Async(value = "ioTaskExecutor")
-    public void sendEmail(String to, String subject, String body) {
+    public void sendEmail(Long idTemplate, String sendTo, String sendFrom, Object object) {
         for (EmailSender emailSender : emailSenders) {
             try {
-                emailSender.sendEmailApi(to, subject, body, "test");
+                emailSender.sendEmailApi(idTemplate, sendTo, sendFrom, object);
                 return;
             } catch (Exception e) {
                 System.err.println("Email service failed: " + emailSender.getClass().getSimpleName() + ": " + e.getMessage());

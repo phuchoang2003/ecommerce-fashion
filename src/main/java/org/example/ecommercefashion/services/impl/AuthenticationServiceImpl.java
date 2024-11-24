@@ -125,6 +125,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserResponse signUp(UserRequest userRequest) {
         User user = userService.createUser(userRequest);
         cartService.create(user);
+
+        // gửi mail chúc mừng
+        emailFactory.sendEmail(3L, user.getEmail(), "phucnc2003@gmail.com", user);
         return UserResponse.fromEntity(user);
     }
 
@@ -135,7 +138,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ResetPasswordToken resetPasswordToken = resetPasswordResetTokenService.createToken(user);
 
         // send Email
-        emailFactory.sendEmail(user.getEmail(), "Reset Password", "Reset Password: " + resetPasswordToken.getToken());
 
         return MessageResponse.builder().message("A password reset link has been sent to your email.").build();
     }
