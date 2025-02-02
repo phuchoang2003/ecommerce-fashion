@@ -14,7 +14,8 @@ stripe:
   signing:
     secret: ${STRIPE_SIGNING_SECRET}
 
-
+firebase:
+  path: ${FIREBASE_PATH}
 
 jwt:
   key: ${JWT_SECRET}
