@@ -2,10 +2,7 @@ package org.example.ecommercefashion.entities.postgres;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.ecommercefashion.dtos.request.OrderRequest;
 import org.example.ecommercefashion.enums.OrderStatus;
 
@@ -14,11 +11,13 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
 @Entity
 @Table(name = "order_details")
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 public class OrderDetail extends BaseEntity {
 
@@ -30,6 +29,7 @@ public class OrderDetail extends BaseEntity {
     private Long userId;
 
     @Column(name = "total")
+    @Builder.Default
     private BigDecimal total = BigDecimal.ZERO;
 
 
@@ -44,6 +44,7 @@ public class OrderDetail extends BaseEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private OrderStatus status = OrderStatus.PENDING;
 
     public static OrderDetail fromRequest(OrderRequest request, User user) {

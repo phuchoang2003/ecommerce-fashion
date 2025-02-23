@@ -38,12 +38,15 @@ public class PaymentTransaction {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
+    @Builder.Default
     private TransactionStatus status = TransactionStatus.PENDING;
 
     @Column(name = "retry_attempt")
+    @Builder.Default
     private Byte retryAttempt = 1;
 
     @Column(name = "max_retry_attempt")
+    @Builder.Default
     private Byte maxRetryAttempt = 3;
 
     @Column(name = "user_id")

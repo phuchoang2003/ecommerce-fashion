@@ -1,9 +1,8 @@
 package org.example.ecommercefashion.dtos.request;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.*;
 import org.example.ecommercefashion.utils.DeviceUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Builder
 @AllArgsConstructor

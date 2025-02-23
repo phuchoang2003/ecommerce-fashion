@@ -30,9 +30,11 @@ public class EmailSendLog {
     private Long id;
 
     @Column(name = "retry_count", columnDefinition = "int default 0")
+    @Builder.Default
     private Integer retryCount = 0;
 
     @Column(name = "max_attempt", columnDefinition = "int default 3")
+    @Builder.Default
     private Integer maxAttempt = 3;
 
     @Column(name = "error_message")
@@ -48,6 +50,7 @@ public class EmailSendLog {
     private EmailStatus status;
 
     @Column(name = "is_deleted")
+    @Builder.Default
     private Boolean deleted = false;
 
     @Column(name = "deleted_at")

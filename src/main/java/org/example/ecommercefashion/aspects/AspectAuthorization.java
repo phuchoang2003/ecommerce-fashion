@@ -1,6 +1,7 @@
 package org.example.ecommercefashion.aspects;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,7 +13,6 @@ import org.example.ecommercefashion.enums.TokenType;
 import org.example.ecommercefashion.security.JwtUtils;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 @Aspect

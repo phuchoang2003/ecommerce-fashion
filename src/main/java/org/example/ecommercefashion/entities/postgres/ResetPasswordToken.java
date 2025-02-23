@@ -35,6 +35,7 @@ public class ResetPasswordToken {
     private User user;
 
     @Column(name = "is_used")
+    @Builder.Default
     private Boolean isUsed = false;
 
 

@@ -23,6 +23,7 @@ public class Cart extends BaseEntity {
     private Long userId;
 
     @Column(name = "total_amount")
+    @Builder.Default
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,6 +32,7 @@ public class Cart extends BaseEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private CartStatus status = CartStatus.ACTIVE;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = {

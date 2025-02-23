@@ -44,6 +44,7 @@ public class Product extends BaseEntity {
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private ProductState state = ProductState.PENDING;
 
     @Column(name = "category_id")

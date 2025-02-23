@@ -46,6 +46,7 @@ public class EmailTemplate {
     private Long id;
 
     @Column(name = "deleted")
+    @Builder.Default
     private Boolean deleted = false;
 
     @Column(name = "created_at")
@@ -63,10 +64,12 @@ public class EmailTemplate {
     private Timestamp deletedAt;
 
     @Column(name = "version", columnDefinition = "int default 0")
+    @Builder.Default
     private Integer version = 0;
 
 
     @Column(name = "is_active")
+    @Builder.Default
     private Boolean isActive = false;
 
     @Type(type = "jsonb")

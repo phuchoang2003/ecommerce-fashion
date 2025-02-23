@@ -1,5 +1,6 @@
 package org.example.ecommercefashion.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.ecommercefashion.annotations.Protected;
 import org.example.ecommercefashion.dtos.request.*;
@@ -13,7 +14,6 @@ import org.example.ecommercefashion.services.Oauth2Service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
