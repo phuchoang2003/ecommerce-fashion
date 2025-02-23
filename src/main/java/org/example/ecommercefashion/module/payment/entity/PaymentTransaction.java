@@ -1,0 +1,78 @@
+package org.example.ecommercefashion.module.payment.entity;
+
+import lombok.*;
+import org.example.ecommercefashion.module.order.entity.OrderDetail;
+import org.example.ecommercefashion.module.payment.enums.TransactionStatus;
+import org.example.ecommercefashion.module.user.entity.User;
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "payment_transactions")
+@Entity
+public class PaymentTransaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "payment_intent_id")
+    private String paymentIntentId;
+
+    @Column(name = "order_id")
+    private Long orderId;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
+
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "reason_failed")
+    private String reasonFailed;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    @Builder.Default
+    private TransactionStatus status = TransactionStatus.PENDING;
+
+    @Column(name = "retry_attempt")
+    @Builder.Default
+    private Byte retryAttempt = 1;
+
+    @Column(name = "max_retry_attempt")
+    @Builder.Default
+    private Byte maxRetryAttempt = 3;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column(name = "expired_at")
+    private Timestamp expiredAt;
+
+    @Column(name = "completed_at")
+    private Timestamp completedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    private OrderDetail orderDetail;
+
+}
