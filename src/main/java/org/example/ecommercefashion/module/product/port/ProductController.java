@@ -1,12 +1,12 @@
 package org.example.ecommercefashion.module.product.port;
 
 import lombok.RequiredArgsConstructor;
-import org.example.ecommercefashion.module.product.dto.ProductRequest;
+import org.example.ecommercefashion.common.core.dto.ResponsePage;
 import org.example.ecommercefashion.module.product.dto.ProductBriefResponse;
 import org.example.ecommercefashion.module.product.dto.ProductDetailResponse;
-import org.example.ecommercefashion.common.core.dto.ResponsePage;
+import org.example.ecommercefashion.module.product.dto.ProductFilter;
+import org.example.ecommercefashion.module.product.dto.ProductRequest;
 import org.example.ecommercefashion.module.product.entity.Product;
-import org.example.ecommercefashion.module.order.repository.service.OrderService;
 import org.example.ecommercefashion.module.product.service.ProductService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-
-    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity<ProductDetailResponse> create(@RequestPart(value = "request") @Valid ProductRequest request,
@@ -50,8 +48,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponsePage<Product, ProductBriefResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(productService.findAll(pageable));
+    public ResponseEntity<ResponsePage<Product, ProductBriefResponse>> findAll(@ModelAttribute ProductFilter filter, Pageable pageable) {
+        return ResponseEntity.ok(productService.findAll(filter, pageable));
     }
 
 //    @PostMapping("test-concurrent")
