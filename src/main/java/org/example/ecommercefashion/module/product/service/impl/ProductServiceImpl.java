@@ -6,22 +6,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.ecommercefashion.common.core.dto.ResponsePage;
 import org.example.ecommercefashion.common.core.exception.ErrorMessage;
-import org.example.ecommercefashion.common.storage.entity.Image;
 import org.example.ecommercefashion.common.core.util.SlugUtils;
 import org.example.ecommercefashion.common.storage.dto.ImageResponse;
-import org.example.ecommercefashion.module.product.enums.ProductState;
+import org.example.ecommercefashion.common.storage.entity.Image;
+import org.example.ecommercefashion.common.storage.service.ImageService;
 import org.example.ecommercefashion.module.order.entity.OrderDetail;
 import org.example.ecommercefashion.module.order.entity.OrderItem;
-import org.example.ecommercefashion.module.product.dto.ProductBriefResponse;
-import org.example.ecommercefashion.module.product.dto.ProductDetailResponse;
-import org.example.ecommercefashion.module.product.dto.ProductRequest;
-import org.example.ecommercefashion.module.product.dto.SizeChartResponse;
+import org.example.ecommercefashion.module.product.dto.*;
 import org.example.ecommercefashion.module.product.entity.*;
+import org.example.ecommercefashion.module.product.enums.ProductState;
 import org.example.ecommercefashion.module.product.projection.ProductBriefDTO;
 import org.example.ecommercefashion.module.product.repository.AttributeRepository;
 import org.example.ecommercefashion.module.product.repository.ProductRepository;
 import org.example.ecommercefashion.module.product.service.CategoryService;
-import org.example.ecommercefashion.common.storage.service.ImageService;
 import org.example.ecommercefashion.module.product.service.ProductService;
 import org.example.ecommercefashion.module.product.service.SizeChartService;
 import org.springframework.data.domain.Page;
@@ -111,8 +108,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponsePage<Product, ProductBriefResponse> findAll(Pageable pageable) {
-        Page<ProductBriefDTO> productBriefDTOS = productRepository.filter(pageable);
+    public ResponsePage<Product, ProductBriefResponse> findAll(ProductFilter filter, Pageable pageable) {
+        Page<ProductBriefDTO> productBriefDTOS = productRepository.filter(filter.getName(),
+                filter.getMinPrice(),
+                filter.getMaxPrice(),
+                filter.getState(),
+                filter.getCategoryName(),
+                pageable);
         Page<ProductBriefResponse> responses = productBriefDTOS.map(this::convertToProductBriefResponse);
         return new ResponsePage<>(responses);
     }
@@ -145,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setState(ProductState.DISCONTINUED);
         productRepository.save(product);
-
+        
     }
 
     @Override
